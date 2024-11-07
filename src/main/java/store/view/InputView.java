@@ -18,4 +18,9 @@ public class InputView {
         System.out.println("현재 " + productName + " " + number + "개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
         return Console.readLine();
     }
+
+    public String inputConfirmMembershipDiscount() {
+        System.out.println("멤버십 할인을 받으시겠습니까? (Y/N)");
+        return Console.readLine();
+    }
 }
