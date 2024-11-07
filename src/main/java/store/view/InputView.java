@@ -9,8 +9,8 @@ public class InputView {
         return Console.readLine();
     }
 
-    public String inputPromotionAddFreeProduct(String productName, int price) {
-        System.out.println("현재 " + productName + "은(는) " + price + "개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
+    public String inputPromotionAddFreeProduct(String productName, int number) {
+        System.out.println("현재 " + productName + "은(는) " + number + "개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
         return Console.readLine();
     }
 
