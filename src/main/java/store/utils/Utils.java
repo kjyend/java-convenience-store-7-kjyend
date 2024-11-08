@@ -26,4 +26,12 @@ public class Utils {
                     Promotion.nameOf(fileProduct[3])));
         }
     }
+
+    public void buildPromotionList(List<String> filePromotions, List<Promotion> promotions) {
+        for (int i = 1; i < filePromotions.size(); i++) {
+            String[] filePromotion = filePromotions.get(i).split(",");
+            promotions.add(new Promotion(filePromotion[0], filePromotion[1], filePromotion[2], filePromotion[3],
+                    filePromotion[4]));
+        }
+    }
 }
