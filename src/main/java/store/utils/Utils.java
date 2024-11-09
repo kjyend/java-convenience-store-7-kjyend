@@ -19,7 +19,7 @@ public class Utils {
         }
     }
 
-    public void buildProductList(List<String> fileProducts, List<Product> products, List<Promotion> promotions) {
+    public void buildProductList(List<String> fileProducts, List<Product> products) {
         for (int i = 1; i < fileProducts.size(); i++) {
             String[] fileProduct = fileProducts.get(i).split(",");
             products.add(new Product(fileProduct[0], fileProduct[1], fileProduct[2],
