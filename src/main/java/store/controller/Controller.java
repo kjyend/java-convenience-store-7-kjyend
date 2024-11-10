@@ -14,7 +14,7 @@ public class Controller {
 
     private final String PRODUCT_PATH = "src/main/resources/products.md";
     private final String PROMOTION_PATH = "src/main/resources/promotions.md";
-    
+
     private final Utils utils;
     private final Validators validators;
     private final InputView inputView;
@@ -29,5 +29,20 @@ public class Controller {
         this.validators = validators;
         this.inputView = inputView;
         this.outputView = outputView;
+    }
+
+    public void startGameSetting() {
+        readProductFile();
+        readPromotionFile();
+    }
+
+    private void readProductFile() {
+        List<String> fileProducts = utils.readFile(PRODUCT_PATH);
+        utils.buildProductList(fileProducts, productList);
+    }
+
+    private void readPromotionFile() {
+        List<String> filePromotions = utils.readFile(PROMOTION_PATH);
+        utils.buildPromotionList(filePromotions, promotionList);
     }
 }
