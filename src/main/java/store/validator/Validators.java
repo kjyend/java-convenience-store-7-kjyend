@@ -19,20 +19,17 @@ public class Validators {
         }
     }
 
-    public void validateProductExists(List<Product> listProducts, String product) {
-        for (Product listProduct : listProducts) {
-            if (!listProduct.sameName(product)) {
+    public void validateProductExists(List<Product> buyProductList, List<Product> productList) {
+        for (Product buyProduct : buyProductList) {
+            if (!productList.contains(buyProduct)) {
                 throw new IllegalArgumentException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
             }
         }
     }
 
-    public void validateProductQuantity(List<Product> matchProduct, Product buyProduct) {
-        int sum = 0;
-        for (Product product : matchProduct) {
-            sum += product.getNumbers();
-        }
-        if (sum > buyProduct.getNumbers()) {
+    public void validateProductQuantity(Product matchProduct, Product buyProduct) {
+        int sum = matchProduct.getQuantity() + matchProduct.getPromotionQuantity();
+        if (sum > buyProduct.getQuantity()) {
             throw new IllegalArgumentException("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
         }
     }

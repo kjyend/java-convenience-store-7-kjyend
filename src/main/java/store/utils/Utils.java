@@ -4,11 +4,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import store.domain.Product;
 import store.domain.Promotion;
+import store.domain.Receipt;
+import store.validator.Validators;
 
 public class Utils {
+
+    private final Validators validators;
+
+    public Utils(Validators validators) {
+        this.validators = validators;
+    }
 
     public List<String> readFile(String files) {
         try {
@@ -63,5 +72,84 @@ public class Utils {
             promotions.add(new Promotion(filePromotion[0], filePromotion[1], filePromotion[2], filePromotion[3],
                     filePromotion[4]));
         }
+    }
+
+    public List<Receipt> productSetting(String product, List<Product> productList) {
+        String[] parts = separationProductQuantity(product);
+        List<Product> buyProductList = addProduct(parts);
+        validators.validateProductExists(buyProductList, productList);
+        return sellProduct(buyProductList, productList);
+    }
+
+    private String[] separationProductQuantity(String product) {
+        return product.split(",");
+    }
+
+    private List<Product> addProduct(String[] parts) {
+        List<Product> buyProductList = new ArrayList<>();
+        for (String part : parts) {
+            String[] session = part.substring(1, part.length() - 1).split("-");
+            buyProductList.add(new Product(session[0], Integer.parseInt(session[1])));
+        }
+        return buyProductList;
+    }
+
+    private List<Receipt> sellProduct(List<Product> buyProductList, List<Product> productList) {
+        List<Receipt> receiptList = new ArrayList<>();
+        for (Product buyProduct : buyProductList) {
+            Product matchProduct = findProduct(buyProduct, productList);
+            validators.validateProductQuantity(matchProduct, buyProduct);
+            receiptList.add(sellProductQuantity(matchProduct, buyProduct));
+        }
+        return receiptList;
+    }
+
+    private Product findProduct(Product buyProduct, List<Product> productList) {
+        return productList.stream()
+                .filter(product -> product.getName().equals(buyProduct.getName()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Receipt sellProductQuantity(Product matchProduct, Product buyProduct) {
+        Receipt receipt = new Receipt(buyProduct.getName(), 0, matchProduct.getPromotion(), 0);
+        if (matchProduct.getPromotionQuantity() > buyProduct.getQuantity()) {
+            processExcessStockPurchase(buyProduct, matchProduct, receipt);
+            return receipt;
+        }
+        processStockShortage(buyProduct, matchProduct, receipt);
+        return receipt;
+    }
+
+    private void processExcessStockPurchase(Product buyProduct, Product matchProduct, Receipt receipt,) {
+        int numbers = getBuyProductZero(buyProduct, matchProduct);
+        receipt.addPromotionQuantity(numbers);
+    }
+
+    private int getBuyProductZero(Product buyProduct, Product matchProduct) {
+        int numbers = buyProduct.getQuantity();
+        matchProduct.reducesStock(numbers);
+        buyProduct.reducesStock(numbers);
+        return numbers;
+    }
+
+
+    private void processStockShortage(Product buyProduct, Product matchProduct, Receipt receipt) {
+        getPromotionProductReceipt(buyProduct, matchProduct, receipt);
+        getProductReceipt(buyProduct, matchProduct, receipt);
+    }
+
+    private void getPromotionProductReceipt(Product buyProduct, Product matchProduct,Receipt receipt) {
+        int numbers = matchProduct.getPromotionQuantity();
+        matchProduct.reducesStock(numbers);
+        receipt.addPromotionQuantity(numbers);
+        buyProduct.reducesStock(numbers);
+    }
+
+    private void getProductReceipt(Product buyProduct, Product matchProduct, Receipt receipt) {
+        int quantity = buyProduct.getQuantity();
+        buyProduct.reducesStock(quantity);
+        matchProduct.reducesStock(quantity);
+        receipt.addQuantity(quantity);
     }
 }

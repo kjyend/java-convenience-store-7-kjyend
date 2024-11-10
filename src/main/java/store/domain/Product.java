@@ -9,6 +9,11 @@ public class Product {
     private String promotion;
     private int promotionQuantity;
 
+    public Product(String name, int quantity) {
+        this.name = name;
+        this.quantity = quantity;
+    }
+
     public Product(String name, String price, String quantity, String promotion, String promotionQuantity) {
         this.name = name;
         this.price = strToInt(price);
@@ -41,7 +46,7 @@ public class Product {
         return this.price;
     }
 
-    public int getNumbers() {
+    public int getQuantity() {
         return this.quantity;
     }
 
@@ -49,13 +54,18 @@ public class Product {
         return this.promotion;
     }
 
+    public int getPromotionQuantity() {
+        return this.promotionQuantity;
+    }
+
     public int reducesStock(int quantity) {
-        if (this.quantity - quantity < 0) {
-            int result = quantity - this.quantity;
-            this.quantity = 0;
-            return result;
-        }
-        return this.quantity - quantity;
+        quantity -= Math.min(this.promotionQuantity, quantity);
+        this.promotionQuantity = Math.max(0, this.promotionQuantity - quantity);
+
+        quantity -= Math.min(this.quantity, quantity);
+        this.quantity = Math.max(0, this.quantity - quantity);
+
+        return quantity;
     }
 
     public boolean validatePromotion() {

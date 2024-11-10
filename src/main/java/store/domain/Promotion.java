@@ -34,6 +34,10 @@ public class Promotion {
         return false;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public boolean sameName(String name) {
         return this.name.equals(name);
     }

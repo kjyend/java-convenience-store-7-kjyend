@@ -51,7 +51,7 @@ public class Controller {
             try {
                 String buyProducts = inputView.inputProductDetails();
                 inputValidator(buyProducts);
-                return utils.productSetting(buyProducts, productList, promotionList);
+                return utils.productSetting(buyProducts, productList);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }

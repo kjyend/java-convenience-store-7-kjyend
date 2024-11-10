@@ -6,16 +6,13 @@ public class Receipt {
     private String promotionName;
     private int promotionQuantity;
 
-    public Receipt(String name, String quantity, String promotionName, String promotionQuantity) {
+    public Receipt(String name, int quantity, String promotionName, int promotionQuantity) {
         this.name = name;
-        this.quantity = strToInt(quantity);
+        this.quantity = quantity;
         this.promotionName = promotionName;
-        this.promotionQuantity = strToInt(promotionQuantity);
+        this.promotionQuantity = promotionQuantity;
     }
 
-    private int strToInt(String str) {
-        return Integer.parseInt(str);
-    }
 
     public void setPromotionName(String productName) {
         this.promotionName = productName;

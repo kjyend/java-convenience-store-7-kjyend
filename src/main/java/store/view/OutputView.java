@@ -13,7 +13,7 @@ public class OutputView {
     public void printProductList(List<Product> products) {
         for (Product product : products) {
             System.out.println(
-                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getNumbers() + "개 "
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getQuantity() + "개 "
                             + product.getPromotion());
         }
     }
