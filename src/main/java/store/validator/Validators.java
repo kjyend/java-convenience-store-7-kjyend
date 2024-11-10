@@ -25,7 +25,16 @@ public class Validators {
                 throw new IllegalArgumentException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
             }
         }
+    }
 
+    public void validateProductQuantity(List<Product> matchProduct, Product buyProduct) {
+        int sum = 0;
+        for (Product product : matchProduct) {
+            sum += product.getNumbers();
+        }
+        if (sum > buyProduct.getNumbers()) {
+            throw new IllegalArgumentException("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+        }
     }
 
     public void validateYesOrNo(String yesNoInput) {
