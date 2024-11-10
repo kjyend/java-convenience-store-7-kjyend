@@ -45,4 +45,28 @@ public class Controller {
         List<String> filePromotions = utils.readFile(PROMOTION_PATH);
         utils.buildPromotionList(filePromotions, promotionList);
     }
+
+    public List<Receipt> inputProduct() {
+        while (true) {
+            try {
+                String buyProducts = inputView.inputProductDetails();
+                inputValidator(buyProducts);
+                return utils.productSetting(buyProducts, productList, promotionList);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void inputValidator(String buyProducts) {
+        validators.validateProductFormat(buyProducts);
+        validatorInputList(buyProducts);
+    }
+
+    private void validatorInputList(String buyProducts) {
+        String[] products = buyProducts.split(",");
+        for (String product : products) {
+            validators.validateProductInputFormat(product);
+        }
+    }
 }
