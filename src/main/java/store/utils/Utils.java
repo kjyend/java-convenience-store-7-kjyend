@@ -22,8 +22,38 @@ public class Utils {
     public void buildProductList(List<String> fileProducts, List<Product> products) {
         for (int i = 1; i < fileProducts.size(); i++) {
             String[] fileProduct = fileProducts.get(i).split(",");
+            initializeOrUpdateProducts(products, fileProduct);
+        }
+    }
+
+    private void initializeOrUpdateProducts(List<Product> products, String[] fileProduct) {
+        for (Product product : products) {
+            if (!product.getName().equals(fileProduct[0])) {
+                createNewProduct(products, fileProduct);
+            }
+            if (product.getName().equals(fileProduct[0])) {
+                updateExistingProduct(fileProduct, product);
+            }
+        }
+    }
+
+    private void createNewProduct(List<Product> products, String[] fileProduct) {
+        if (fileProduct[3] == null) {
             products.add(new Product(fileProduct[0], fileProduct[1], fileProduct[2],
-                    fileProduct[3]));
+                    fileProduct[3], null));
+        }
+        if (fileProduct[3] != null) {
+            products.add(new Product(fileProduct[0], fileProduct[1], null,
+                    fileProduct[3], fileProduct[2]));
+        }
+    }
+
+    private void updateExistingProduct(String[] fileProduct, Product product) {
+        if (fileProduct[3] == null) {
+            product.addQuantity(Integer.parseInt(fileProduct[2]));
+        }
+        if (fileProduct[3] != null) {
+            product.addPromotionQuantity(Integer.parseInt(fileProduct[2]));
         }
     }
 

@@ -7,16 +7,26 @@ public class Product {
     private int price;
     private int quantity;
     private String promotion;
+    private int promotionQuantity;
 
-    public Product(String name, String price, String quantity, String promotion) {
+    public Product(String name, String price, String quantity, String promotion, String promotionQuantity) {
         this.name = name;
         this.price = strToInt(price);
         this.quantity = strToInt(quantity);
         this.promotion = promotion;
+        this.promotionQuantity = strToInt(promotionQuantity);
     }
 
     private int strToInt(String price) {
         return Integer.parseInt(price);
+    }
+
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
+    }
+
+    public void addPromotionQuantity(int promotionQuantity) {
+        this.promotionQuantity += promotionQuantity;
     }
 
     public String getName() {
