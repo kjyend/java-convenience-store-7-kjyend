@@ -61,9 +61,7 @@ public class OutputView {
         int sumPrice = getSumPrice(receiptList);
         int targetPrice = getTargetPrice(receiptList);
         int membershipPrice = 0;
-        if (membership.equals("Y")) {
-            membershipPrice = getMembershipPrice(receiptList);
-        }
+        membershipPrice = getMembershipPrice(receiptList);
         printFullReceipt(sumPrice, targetPrice, membershipPrice);
     }
 

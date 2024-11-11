@@ -93,10 +93,16 @@ public class Controller {
             if (receipt.getPromotionName() != null) {
                 Promotion promotion = utils.findPromotion(receipt, promotionList);
                 Product product = utils.findProduct(receipt, productList);
-                processPromotionCondition(product, promotion, receipt);
-                processPromotionNotCondition(product, promotion, receipt);
-                promotionQuantityTargetPlus(receipt, promotion);
+                promotionNotNull(receipt, promotion, product);
             }
+        }
+    }
+
+    private void promotionNotNull(Receipt receipt, Promotion promotion, Product product) {
+        if (promotion != null) {
+            processPromotionCondition(product, promotion, receipt);
+            processPromotionNotCondition(product, promotion, receipt);
+            promotionQuantityTargetPlus(receipt, promotion);
         }
     }
 

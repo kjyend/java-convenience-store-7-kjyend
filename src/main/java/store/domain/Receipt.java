@@ -64,4 +64,8 @@ public class Receipt {
     public int getTargetQuantity() {
         return this.promotionTargetQuantity;
     }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }

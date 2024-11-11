@@ -49,12 +49,12 @@ public class Utils {
 
     private void createNewProduct(List<Product> products, String[] fileProduct) {
         if (fileProduct[3].equals("null")) {
-            products.add(new Product(fileProduct[0], fileProduct[1], fileProduct[2],
-                    fileProduct[3], "0"));
+            products.add(new Product(fileProduct[0], Integer.parseInt(fileProduct[1]), Integer.parseInt(fileProduct[2]),
+                    fileProduct[3], 0));
         }
         if (!fileProduct[3].equals("null")) {
-            products.add(new Product(fileProduct[0], fileProduct[1], "0",
-                    fileProduct[3], fileProduct[2]));
+            products.add(new Product(fileProduct[0], Integer.parseInt(fileProduct[1]), 0,
+                    fileProduct[3], Integer.parseInt(fileProduct[2])));
         }
     }
 
@@ -106,19 +106,32 @@ public class Utils {
     }
 
     private Product findProduct(Product buyProduct, List<Product> productList) {
-        return productList.stream()
+        List<Product> checkProducts = productList.stream()
                 .filter(product -> product.getName().equals(buyProduct.getName()))
-                .findFirst()
-                .orElse(null);
+                .toList();
+        Product matchProduct = new Product(buyProduct.getName(), buyProduct.getPrice(), 0, "null", 0);
+        for (Product checkProduct : checkProducts) {
+            if (checkProduct.getPromotion().equals("null")) {
+                matchProduct.addQuantity(checkProduct.getQuantity());
+            }
+            if (!checkProduct.getPromotion().equals("null")) {
+                matchProduct.setPromotion(checkProduct.getPromotion());
+                matchProduct.addPromotionQuantity(checkProduct.getPromotionQuantity());
+            }
+            matchProduct.setPrice(checkProduct.getPrice());
+        }
+        return matchProduct;
     }
 
     private Receipt sellProductQuantity(Product matchProduct, Product buyProduct) {
         Receipt receipt = new Receipt(buyProduct.getName(), buyProduct.getPrice(), 0, matchProduct.getPromotion(), 0);
         if (matchProduct.getPromotionQuantity() > buyProduct.getQuantity()) {
             processExcessStockPurchase(buyProduct, matchProduct, receipt);
+            receipt.setPrice(matchProduct.getPrice());
             return receipt;
         }
         processStockShortage(buyProduct, matchProduct, receipt);
+        receipt.setPrice(matchProduct.getPrice());
         return receipt;
     }
 

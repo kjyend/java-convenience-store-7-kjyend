@@ -14,16 +14,12 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public Product(String name, String price, String quantity, String promotion, String promotionQuantity) {
+    public Product(String name, int price, int quantity, String promotion, int promotionQuantity) {
         this.name = name;
-        this.price = strToInt(price);
-        this.quantity = strToInt(quantity);
+        this.price = price;
+        this.quantity = quantity;
         this.promotion = promotion;
-        this.promotionQuantity = strToInt(promotionQuantity);
-    }
-
-    private int strToInt(String price) {
-        return Integer.parseInt(price);
+        this.promotionQuantity = promotionQuantity;
     }
 
     public void addQuantity(int quantity) {
@@ -74,5 +70,13 @@ public class Product {
 
     public boolean sameName(String product) {
         return this.name.equals(product);
+    }
+
+    public void setPromotion(String promotion) {
+        this.promotion = promotion;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
