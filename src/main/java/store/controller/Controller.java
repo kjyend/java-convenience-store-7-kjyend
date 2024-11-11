@@ -23,12 +23,24 @@ public class Controller {
     private List<Product> productList = new ArrayList<>();
     private List<Promotion> promotionList = new ArrayList<>();
     private List<Receipt> receiptList;
+    private String repurchased = "Y";
 
     public Controller(Utils utils, Validators validators, InputView inputView, OutputView outputView) {
         this.utils = utils;
         this.validators = validators;
         this.inputView = inputView;
         this.outputView = outputView;
+    }
+
+    public void start() {
+        startGameSetting();
+        while (repurchased.equals("Y")) {
+            receiptList = inputProduct();
+            validateAndApplyPromotions(receiptList);
+            String membership = membershipCheck();
+            printResult(membership);
+            repurchased = repurchaseIntention();
+        }
     }
 
     public void startGameSetting() {
