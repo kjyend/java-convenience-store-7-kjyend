@@ -158,4 +158,10 @@ public class Controller {
             }
         }
     }
+
+    public void printResult() {
+        outputView.printReceiptList(receiptList);
+        outputView.printPromotionDetail(receiptList);
+        outputView.printReceiptListDetail(receiptList);
+    }
 }
