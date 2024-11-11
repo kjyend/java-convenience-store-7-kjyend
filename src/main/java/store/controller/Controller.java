@@ -77,6 +77,7 @@ public class Controller {
                 Product product = utils.findProduct(receipt, productList);
                 processPromotionCondition(product, promotion, receipt);
                 processPromotionNotCondition(product, promotion, receipt);
+                promotionQuantityTargetPlus(receipt, promotion);
             }
         }
     }
@@ -138,6 +139,11 @@ public class Controller {
             product.addPromotionQuantity(excessPromotionQuantity);
             receipt.reducePromotionQuantity(excessPromotionQuantity);
         }
+    }
+
+    private void promotionQuantityTargetPlus(Receipt receipt, Promotion promotion) {
+        int sum = promotion.getFree() + promotion.getBuy();
+        receipt.setPromotionTargetQuantity(sum);
     }
 
     public String membershipCheck() {

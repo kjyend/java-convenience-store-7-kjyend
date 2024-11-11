@@ -57,8 +57,8 @@ public class Receipt {
         return this.price;
     }
 
-    public void setPromotionTargetQuantity(int check) {
-        this.promotionTargetQuantity = this.promotionQuantity / check;
+    public void setPromotionTargetQuantity(int sum) {
+        this.promotionTargetQuantity = this.promotionQuantity / sum;
     }
 
     public int getTargetQuantity() {
