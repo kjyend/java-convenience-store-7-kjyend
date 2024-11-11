@@ -165,4 +165,16 @@ public class Controller {
         outputView.printReceiptListDetail(receiptList, membership);
     }
 
+    public String repurchaseIntention() {
+        while (true) {
+            try {
+                String booleanCheck = inputView.inputAskForAdditionalPurchase();
+                validators.validateYesOrNo(booleanCheck);
+                return booleanCheck;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
 }
