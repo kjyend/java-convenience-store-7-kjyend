@@ -34,7 +34,7 @@ public class OutputView {
     private static void quantityZeroCheck(Product product) {
         if (product.getQuantity() == 0) {
             System.out.println(
-                    "- " + product.getName() + " " + product.getPriceUtil() + "원 재고없음");
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 재고 없음");
         }
         if (product.getQuantity() != 0) {
             System.out.println(
@@ -52,7 +52,7 @@ public class OutputView {
     private static void promotionQuantityZeroCheck(Product product) {
         if (product.getPromotionQuantity() == 0) {
             System.out.println(
-                    "- " + product.getName() + " " + product.getPriceUtil() + "원 재고없음");
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 재고 없음");
         }
         if (product.getPromotionQuantity() != 0) {
             System.out.println(

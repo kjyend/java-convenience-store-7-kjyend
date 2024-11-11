@@ -72,6 +72,7 @@ public class Controller {
     private void readProductFile() {
         List<String> fileProducts = utils.readFile(PRODUCT_PATH);
         utils.buildProductList(fileProducts, productList);
+        utils.buildCheckProductList(productList);
     }
 
     private void readPromotionFile() {

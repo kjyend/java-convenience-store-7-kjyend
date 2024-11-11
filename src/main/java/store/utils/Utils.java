@@ -47,6 +47,17 @@ public class Utils {
         }
     }
 
+    public void buildCheckProductList(List<Product> productList) {
+        Product lastProduct = productList.getFirst();
+        for (int i = 1; i < productList.size(); i++) {
+            if (!lastProduct.getPromotion().equals("null") && !productList.get(i).getName()
+                    .equals(lastProduct.getName())) {
+                productList.add(i, new Product(lastProduct.getName(), lastProduct.getPrice(), 0, "null", 0));
+            }
+            lastProduct = productList.get(i);
+        }
+    }
+
     public void buildPromotionList(List<String> filePromotions, List<Promotion> promotions) {
         for (int i = 1; i < filePromotions.size(); i++) {
             String[] filePromotion = filePromotions.get(i).split(",");
@@ -137,7 +148,7 @@ public class Utils {
     private void processStockShortage(Product buyProduct, Product matchProduct, Receipt receipt) {
         getProductReceipt(buyProduct, matchProduct, receipt);
     }
-    
+
 
     private void getProductReceipt(Product buyProduct, Product matchProduct, Receipt receipt) {
         int quantity = buyProduct.getQuantity();
