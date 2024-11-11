@@ -139,4 +139,16 @@ public class Controller {
             receipt.reducePromotionQuantity(excessPromotionQuantity);
         }
     }
+
+    public String membershipCheck() {
+        while (true) {
+            try {
+                String booleanCheck = inputView.inputConfirmMembershipDiscount();
+                validators.validateYesOrNo(booleanCheck);
+                return booleanCheck;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }
