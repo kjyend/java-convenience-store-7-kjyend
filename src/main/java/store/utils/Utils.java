@@ -36,17 +36,6 @@ public class Utils {
         }
     }
 
-    private void initializeOrUpdateProducts(List<Product> products, String[] fileProduct) {
-        for (Product product : products) {
-            if (!product.getName().equals(fileProduct[0])) {
-                createNewProduct(products, fileProduct);
-            }
-            if (product.getName().equals(fileProduct[0])) {
-                updateExistingProduct(fileProduct, product);
-            }
-        }
-    }
-
     private void createNewProduct(List<Product> products, String[] fileProduct) {
         if (fileProduct[3].equals("null")) {
             products.add(new Product(fileProduct[0], Integer.parseInt(fileProduct[1]), Integer.parseInt(fileProduct[2]),
@@ -58,15 +47,6 @@ public class Utils {
         }
     }
 
-    private void updateExistingProduct(String[] fileProduct, Product product) {
-        if (fileProduct[3] == null) {
-            product.addQuantity(Integer.parseInt(fileProduct[2]));
-        }
-        if (fileProduct[3] != null) {
-            product.addPromotionQuantity(Integer.parseInt(fileProduct[2]));
-        }
-    }
-
     public void buildPromotionList(List<String> filePromotions, List<Promotion> promotions) {
         for (int i = 1; i < filePromotions.size(); i++) {
             String[] filePromotion = filePromotions.get(i).split(",");
@@ -75,11 +55,11 @@ public class Utils {
         }
     }
 
-    public List<Receipt> productSetting(String product, List<Product> productList) {
+    public List<Receipt> productSetting(String product, List<Product> productList, List<Promotion> promotionList) {
         String[] parts = separationProductQuantity(product);
         List<Product> buyProductList = addProduct(parts);
         validators.validateProductExists(buyProductList, productList);
-        return sellProduct(buyProductList, productList);
+        return sellProduct(buyProductList, productList, promotionList);
     }
 
     private String[] separationProductQuantity(String product) {
@@ -95,12 +75,13 @@ public class Utils {
         return buyProductList;
     }
 
-    private List<Receipt> sellProduct(List<Product> buyProductList, List<Product> productList) {
+    private List<Receipt> sellProduct(List<Product> buyProductList, List<Product> productList,
+                                      List<Promotion> promotionList) {
         List<Receipt> receiptList = new ArrayList<>();
         for (Product buyProduct : buyProductList) {
             Product matchProduct = findProduct(buyProduct, productList);
             validators.validateProductQuantity(matchProduct, buyProduct);
-            receiptList.add(sellProductQuantity(matchProduct, buyProduct));
+            receiptList.add(sellProductQuantity(matchProduct, buyProduct, promotionList));
         }
         return receiptList;
     }
@@ -123,12 +104,17 @@ public class Utils {
         return matchProduct;
     }
 
-    private Receipt sellProductQuantity(Product matchProduct, Product buyProduct) {
+    private Receipt sellProductQuantity(Product matchProduct, Product buyProduct, List<Promotion> promotionList) {
         Receipt receipt = new Receipt(buyProduct.getName(), buyProduct.getPrice(), 0, matchProduct.getPromotion(), 0);
         if (matchProduct.getPromotionQuantity() >= buyProduct.getQuantity()) {
-            processExcessStockPurchase(buyProduct, matchProduct, receipt);
-            receipt.setPrice(matchProduct.getPrice());
-            return receipt;
+            for (Promotion promotion : promotionList) {
+                if (promotion.getName().equals(matchProduct.getPromotion()) && promotion.promotionDate()) {
+                    processExcessStockPurchase(buyProduct, matchProduct, receipt);
+                    receipt.setPrice(matchProduct.getPrice());
+                    return receipt;
+                }
+            }
+
         }
         processStockShortage(buyProduct, matchProduct, receipt);
         receipt.setPrice(matchProduct.getPrice());
@@ -149,16 +135,9 @@ public class Utils {
 
 
     private void processStockShortage(Product buyProduct, Product matchProduct, Receipt receipt) {
-        getPromotionProductReceipt(buyProduct, matchProduct, receipt);
         getProductReceipt(buyProduct, matchProduct, receipt);
     }
-
-    private void getPromotionProductReceipt(Product buyProduct, Product matchProduct, Receipt receipt) {
-        int numbers = matchProduct.getPromotionQuantity();
-        matchProduct.reducesStock(numbers);
-        receipt.addPromotionQuantity(numbers);
-        buyProduct.reducesStock(numbers);
-    }
+    
 
     private void getProductReceipt(Product buyProduct, Product matchProduct, Receipt receipt) {
         int quantity = buyProduct.getQuantity();
