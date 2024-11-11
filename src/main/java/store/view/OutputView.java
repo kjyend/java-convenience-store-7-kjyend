@@ -79,7 +79,7 @@ public class OutputView {
     private int getMembershipPrice(List<Receipt> receiptList) {
         int membershipPrice = 0;
         for (Receipt receipt : receiptList) {
-            membershipPrice = receipt.getPrice() * receipt.getQuantity();
+            membershipPrice = (int) (receipt.getPrice() * receipt.getQuantity() * 0.3);
         }
         membershipPrice = Math.min(8000, membershipPrice);
         System.out.println("멤버십할인\t\t\t-" + utils.getPriceUtil(membershipPrice));
