@@ -61,7 +61,7 @@ public class OutputView {
         int sumPrice = getSumPrice(receiptList);
         int targetPrice = getTargetPrice(receiptList);
         int membershipPrice = 0;
-        membershipPrice = getMembershipPrice(receiptList);
+        membershipPrice = getMembershipPrice(receiptList, membership);
         printFullReceipt(sumPrice, targetPrice, membershipPrice);
     }
 
@@ -76,12 +76,14 @@ public class OutputView {
         return targetPrice;
     }
 
-    private int getMembershipPrice(List<Receipt> receiptList) {
+    private int getMembershipPrice(List<Receipt> receiptList, String membership) {
         int membershipPrice = 0;
-        for (Receipt receipt : receiptList) {
-            membershipPrice = (int) (receipt.getPrice() * receipt.getQuantity() * 0.3);
+        if (membership.equals("Y")) {
+            for (Receipt receipt : receiptList) {
+                membershipPrice = (int) (receipt.getPrice() * receipt.getQuantity() * 0.3);
+            }
+            membershipPrice = Math.min(8000, membershipPrice);
         }
-        membershipPrice = Math.min(8000, membershipPrice);
         System.out.println("멤버십할인\t\t\t-" + utils.getPriceUtil(membershipPrice));
         return membershipPrice;
     }
