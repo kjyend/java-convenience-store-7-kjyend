@@ -129,7 +129,7 @@ public class Controller {
     private void processPromotionCondition(Product product, Promotion promotion, Receipt receipt) {
         int sum = promotion.getBuy() + promotion.getFree();
         if (promotion.promotionDate() && receipt.getPromotionQuantity() % sum == sum - 1
-                && product.getPromotionQuantity() > 0) {
+                && product.getPromotionQuantity() - receipt.getPromotionQuantity() > 0) {
             String booleanCheck = receivePromotionConfirmation(receipt);
             promotionYesCheck(product, receipt, booleanCheck);
         }
@@ -156,7 +156,7 @@ public class Controller {
 
     private void processPromotionNotCondition(Product product, Promotion promotion, Receipt receipt) {
         int sum = promotion.getBuy() + promotion.getFree();
-        int excessQuantity = receipt.getPromotionQuantity() + receipt.getQuantity() % sum;
+        int excessQuantity = receipt.getQuantity() + receipt.getPromotionQuantity() % sum;
         if (promotion.promotionDate() && excessQuantity > sum) {
             String booleanCheck = processNonPromotionalPurchase(receipt, excessQuantity);
             promotionNoCheck(product, receipt, booleanCheck, excessQuantity);

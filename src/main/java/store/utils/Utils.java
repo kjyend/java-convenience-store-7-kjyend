@@ -178,8 +178,9 @@ public class Utils {
 
     public Product findProduct(Receipt receipt, List<Product> productList) {
         for (Product product : productList) {
-            product.sameName(receipt.getName());
-            return product;
+            if (product.sameName(receipt.getName())) {
+                return product;
+            }
         }
         return null;
     }

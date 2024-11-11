@@ -26,7 +26,7 @@ public class OutputView {
     }
 
     private static void displayNonPromotionProduct(Product product) {
-        if (product.getPromotion() == null) {
+        if (product.getPromotion().equals("null")) {
             quantityZeroCheck(product);
         }
     }
@@ -38,12 +38,13 @@ public class OutputView {
         }
         if (product.getQuantity() != 0) {
             System.out.println(
-                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getQuantity() + "개");
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getQuantity() + "개"
+            );
         }
     }
 
     private static void displayPromotionProduct(Product product) {
-        if (product.getPromotion() != null) {
+        if (!product.getPromotion().equals("null")) {
             promotionQuantityZeroCheck(product);
         }
     }
@@ -55,7 +56,8 @@ public class OutputView {
         }
         if (product.getPromotionQuantity() != 0) {
             System.out.println(
-                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getPromotion() + "개");
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getPromotionQuantity()
+                            + "개 " + product.getPromotion());
         }
     }
 
