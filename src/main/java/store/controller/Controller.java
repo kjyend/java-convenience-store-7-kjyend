@@ -69,4 +69,42 @@ public class Controller {
             validators.validateProductInputFormat(product);
         }
     }
+
+    public void validateAndApplyPromotions(List<Receipt> receiptList) {
+        for (Receipt receipt : receiptList) {
+            if (receipt.getPromotionName() != null) {
+                Promotion promotion = utils.findPromotion(receipt, promotionList);
+                Product product = utils.findProduct(receipt, productList);
+                processPromotionCondition(product, promotion, receipt);
+            }
+        }
+    }
+
+
+    private void processPromotionCondition(Product product, Promotion promotion, Receipt receipt) {
+        int sum = promotion.getBuy() + promotion.getFree();
+        if (receipt.getPromotionQuantity() % sum == sum - 1 && product.getPromotionQuantity() > 0) {
+            String booleanCheck = receivePromotionConfirmation(receipt);
+            promotionBooleanCheck(product, receipt, booleanCheck);
+        }
+    }
+
+    private String receivePromotionConfirmation(Receipt receipt) {
+        while (true) {
+            try {
+                String booleanCheck = inputView.inputPromotionAddFreeProduct(receipt.getName());
+                validators.validateYesOrNo(booleanCheck);
+                return booleanCheck;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void promotionBooleanCheck(Product product, Receipt receipt, String booleanCheck) {
+        if (booleanCheck.equals("Y")) {
+            product.reducesStock(1);
+            receipt.addPromotionQuantity(1);
+        }
+    }
 }

@@ -121,7 +121,7 @@ public class Utils {
         return receipt;
     }
 
-    private void processExcessStockPurchase(Product buyProduct, Product matchProduct, Receipt receipt,) {
+    private void processExcessStockPurchase(Product buyProduct, Product matchProduct, Receipt receipt) {
         int numbers = getBuyProductZero(buyProduct, matchProduct);
         receipt.addPromotionQuantity(numbers);
     }
@@ -139,7 +139,7 @@ public class Utils {
         getProductReceipt(buyProduct, matchProduct, receipt);
     }
 
-    private void getPromotionProductReceipt(Product buyProduct, Product matchProduct,Receipt receipt) {
+    private void getPromotionProductReceipt(Product buyProduct, Product matchProduct, Receipt receipt) {
         int numbers = matchProduct.getPromotionQuantity();
         matchProduct.reducesStock(numbers);
         receipt.addPromotionQuantity(numbers);
@@ -151,5 +151,22 @@ public class Utils {
         buyProduct.reducesStock(quantity);
         matchProduct.reducesStock(quantity);
         receipt.addQuantity(quantity);
+    }
+
+    public Promotion findPromotion(Receipt receipt, List<Promotion> promotionList) {
+        for (Promotion promotion : promotionList) {
+            if (promotion.getName().equals(receipt.getPromotionName())) {
+                return promotion;
+            }
+        }
+        return null;
+    }
+
+    public Product findProduct(Receipt receipt, List<Product> productList) {
+        for (Product product : productList) {
+            product.sameName(receipt.getName());
+            return product;
+        }
+        return null;
     }
 }
