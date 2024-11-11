@@ -49,22 +49,15 @@ public class OutputView {
         }
     }
 
-    public void printReceiptListDetail(List<Receipt> receiptList) {
+    public void printReceiptListDetail(List<Receipt> receiptList, String membership) {
         System.out.println("====================================");
         int sumPrice = getSumPrice(receiptList);
         int targetPrice = getTargetPrice(receiptList);
-        int membershipPrice = getMembershipPrice(receiptList);
-        printFullReceipt(sumPrice, targetPrice, membershipPrice);
-    }
-
-    private int getMembershipPrice(List<Receipt> receiptList) {
         int membershipPrice = 0;
-        for (Receipt receipt : receiptList) {
-            membershipPrice = receipt.getPrice() * receipt.getQuantity();
+        if (membership.equals("Y")) {
+            membershipPrice = getMembershipPrice(receiptList);
         }
-        membershipPrice = Math.min(8000, membershipPrice);
-        System.out.println("멤버십할인\t\t\t-" + utils.getPriceUtil(membershipPrice));
-        return membershipPrice;
+        printFullReceipt(sumPrice, targetPrice, membershipPrice);
     }
 
     private int getTargetPrice(List<Receipt> receiptList) {
@@ -76,6 +69,16 @@ public class OutputView {
         }
         System.out.println("행사할인\t\t\t-" + utils.getPriceUtil(targetPrice));
         return targetPrice;
+    }
+
+    private int getMembershipPrice(List<Receipt> receiptList) {
+        int membershipPrice = 0;
+        for (Receipt receipt : receiptList) {
+            membershipPrice = receipt.getPrice() * receipt.getQuantity();
+        }
+        membershipPrice = Math.min(8000, membershipPrice);
+        System.out.println("멤버십할인\t\t\t-" + utils.getPriceUtil(membershipPrice));
+        return membershipPrice;
     }
 
     private int getSumPrice(List<Receipt> receiptList) {

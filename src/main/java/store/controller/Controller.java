@@ -159,9 +159,10 @@ public class Controller {
         }
     }
 
-    public void printResult() {
+    public void printResult(String membership) {
         outputView.printReceiptList(receiptList);
         outputView.printPromotionDetail(receiptList);
-        outputView.printReceiptListDetail(receiptList);
+        outputView.printReceiptListDetail(receiptList, membership);
     }
+
 }
