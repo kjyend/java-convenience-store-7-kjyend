@@ -54,14 +54,12 @@ public class Product {
         return this.promotionQuantity;
     }
 
-    public int reducesStock(int quantity) {
-        quantity -= Math.min(this.promotionQuantity, quantity);
-        this.promotionQuantity = Math.max(0, this.promotionQuantity - quantity);
-
-        quantity -= Math.min(this.quantity, quantity);
-        this.quantity = Math.max(0, this.quantity - quantity);
-
-        return quantity;
+    public void reducesStock(int quantity) {
+        int promotionReduction = Math.min(this.promotionQuantity, quantity);
+        this.promotionQuantity -= promotionReduction;
+        quantity -= promotionReduction;
+        int normalReduction = Math.min(this.quantity, quantity);
+        this.quantity -= normalReduction;
     }
 
     public boolean validatePromotion() {

@@ -125,7 +125,7 @@ public class Utils {
 
     private Receipt sellProductQuantity(Product matchProduct, Product buyProduct) {
         Receipt receipt = new Receipt(buyProduct.getName(), buyProduct.getPrice(), 0, matchProduct.getPromotion(), 0);
-        if (matchProduct.getPromotionQuantity() > buyProduct.getQuantity()) {
+        if (matchProduct.getPromotionQuantity() >= buyProduct.getQuantity()) {
             processExcessStockPurchase(buyProduct, matchProduct, receipt);
             receipt.setPrice(matchProduct.getPrice());
             return receipt;

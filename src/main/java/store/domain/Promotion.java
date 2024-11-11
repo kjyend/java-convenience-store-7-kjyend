@@ -32,10 +32,7 @@ public class Promotion {
     }
 
     public boolean promotionDate() {
-        if (this.startDate.isAfter(DateTimes.now()) && this.endDate.isBefore(DateTimes.now())) {
-            return true;
-        }
-        return false;
+        return this.startDate.isBefore(DateTimes.now()) && this.endDate.isAfter(DateTimes.now());
     }
 
     public String getName() {
