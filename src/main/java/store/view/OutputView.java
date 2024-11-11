@@ -92,7 +92,7 @@ public class OutputView {
         int sumQuantity = 0;
         int sumPrice = 0;
         for (Receipt receipt : receiptList) {
-            sumQuantity += receipt.getQuantity() + receipt.getPromotionQuantity();
+            sumQuantity = receipt.getQuantity() + receipt.getPromotionQuantity();
             sumPrice += receipt.getPrice() * sumQuantity;
         }
         System.out.println("총구매액\t\t" + sumQuantity + "\t" + utils.getPriceUtil(sumPrice));
