@@ -41,4 +41,13 @@ public class Receipt {
     public int getQuantity() {
         return this.quantity;
     }
+
+    public int reduceQuantity(int quantity) {
+        this.quantity -= quantity;
+        return this.quantity;
+    }
+
+    public void reducePromotionQuantity(int promotionQuantity) {
+        this.promotionQuantity -= promotionQuantity;
+    }
 }

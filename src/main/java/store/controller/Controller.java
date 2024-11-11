@@ -76,16 +76,16 @@ public class Controller {
                 Promotion promotion = utils.findPromotion(receipt, promotionList);
                 Product product = utils.findProduct(receipt, productList);
                 processPromotionCondition(product, promotion, receipt);
+                processPromotionNotCondition(product, promotion, receipt);
             }
         }
     }
-
 
     private void processPromotionCondition(Product product, Promotion promotion, Receipt receipt) {
         int sum = promotion.getBuy() + promotion.getFree();
         if (receipt.getPromotionQuantity() % sum == sum - 1 && product.getPromotionQuantity() > 0) {
             String booleanCheck = receivePromotionConfirmation(receipt);
-            promotionBooleanCheck(product, receipt, booleanCheck);
+            promotionYesCheck(product, receipt, booleanCheck);
         }
     }
 
@@ -101,10 +101,42 @@ public class Controller {
         }
     }
 
-    private void promotionBooleanCheck(Product product, Receipt receipt, String booleanCheck) {
+    private void promotionYesCheck(Product product, Receipt receipt, String booleanCheck) {
         if (booleanCheck.equals("Y")) {
             product.reducesStock(1);
             receipt.addPromotionQuantity(1);
+        }
+    }
+
+    private void processPromotionNotCondition(Product product, Promotion promotion, Receipt receipt) {
+        int sum = promotion.getBuy() + promotion.getFree();
+        int excessQuantity = receipt.getPromotionQuantity() + receipt.getQuantity() % sum;
+        if (excessQuantity > sum) {
+            String booleanCheck = processNonPromotionalPurchase(receipt, excessQuantity);
+            promotionNoCheck(product, receipt, booleanCheck, excessQuantity);
+        }
+    }
+
+    private String processNonPromotionalPurchase(Receipt receipt, int excessQuantity) {
+        while (true) {
+            try {
+                String booleanCheck = inputView.inputConfirmPurchaseWithoutPromotion(receipt.getName(), excessQuantity);
+                validators.validateYesOrNo(booleanCheck);
+                return booleanCheck;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void promotionNoCheck(Product product, Receipt receipt, String booleanCheck, int excessQuantity) {
+        if (booleanCheck.equals("N")) {
+            int quantity = receipt.getQuantity();
+            product.addQuantity(quantity);
+            receipt.reduceQuantity(quantity);
+            int excessPromotionQuantity = excessQuantity - quantity;
+            product.addPromotionQuantity(excessPromotionQuantity);
+            receipt.reducePromotionQuantity(excessPromotionQuantity);
         }
     }
 }
