@@ -2,12 +2,15 @@ package store.domain;
 
 public class Receipt {
     private String name;
+    private int price;
     private int quantity;
     private String promotionName;
     private int promotionQuantity;
+    private int promotionTargetQuantity;
 
-    public Receipt(String name, int quantity, String promotionName, int promotionQuantity) {
+    public Receipt(String name, int price, int quantity, String promotionName, int promotionQuantity) {
         this.name = name;
+        this.price = price;
         this.quantity = quantity;
         this.promotionName = promotionName;
         this.promotionQuantity = promotionQuantity;
@@ -48,5 +51,17 @@ public class Receipt {
 
     public void reducePromotionQuantity(int promotionQuantity) {
         this.promotionQuantity -= promotionQuantity;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+
+    public void setPromotionTargetQuantity(int check) {
+        this.promotionTargetQuantity = this.promotionQuantity / check;
+    }
+
+    public int getTargetQuantity() {
+        return this.promotionTargetQuantity;
     }
 }
