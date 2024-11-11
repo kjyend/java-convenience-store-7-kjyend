@@ -35,6 +35,7 @@ public class Controller {
     public void start() {
         startGameSetting();
         while (repurchased.equals("Y")) {
+            printStart();
             receiptList = inputProduct();
             validateAndApplyPromotions(receiptList);
             String membership = membershipCheck();
@@ -56,6 +57,11 @@ public class Controller {
     private void readPromotionFile() {
         List<String> filePromotions = utils.readFile(PROMOTION_PATH);
         utils.buildPromotionList(filePromotions, promotionList);
+    }
+
+    private void printStart() {
+        outputView.startGame();
+        outputView.printProductList(productList);
     }
 
     public List<Receipt> inputProduct() {

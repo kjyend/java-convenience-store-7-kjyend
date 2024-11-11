@@ -1,7 +1,9 @@
 package store.domain;
 
 import camp.nextstep.edu.missionutils.DateTimes;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Promotion {
 
@@ -20,7 +22,9 @@ public class Promotion {
     }
 
     private LocalDateTime date(String startDate) {
-        return LocalDateTime.parse(startDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(startDate, formatter);
+        return date.atStartOfDay();
     }
 
     private int strToInt(String buy) {

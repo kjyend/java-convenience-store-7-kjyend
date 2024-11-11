@@ -20,9 +20,16 @@ public class OutputView {
 
     public void printProductList(List<Product> products) {
         for (Product product : products) {
-            System.out.println(
-                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getQuantity() + "개 "
-                            + product.getPromotion());
+            if (product.getQuantity() == 0) {
+                System.out.println(
+                        "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getPromotionQuantity()
+                                + "개 " + product.getPromotion());
+            }
+            if (product.getQuantity() != 0) {
+                System.out.println(
+                        "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getQuantity()
+                                + "개 " + product.getPromotion());
+            }
         }
     }
 

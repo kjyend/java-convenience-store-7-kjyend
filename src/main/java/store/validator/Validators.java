@@ -21,10 +21,19 @@ public class Validators {
 
     public void validateProductExists(List<Product> buyProductList, List<Product> productList) {
         for (Product buyProduct : buyProductList) {
-            if (!productList.contains(buyProduct)) {
+            if (!findAndValidateProduct(productList, buyProduct)) {
                 throw new IllegalArgumentException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
             }
         }
+    }
+
+    private boolean findAndValidateProduct(List<Product> productList, Product buyProduct) {
+        for (Product product : productList) {
+            if (product.getName().equals(buyProduct.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void validateProductQuantity(Product matchProduct, Product buyProduct) {

@@ -32,7 +32,7 @@ public class Utils {
     public void buildProductList(List<String> fileProducts, List<Product> products) {
         for (int i = 1; i < fileProducts.size(); i++) {
             String[] fileProduct = fileProducts.get(i).split(",");
-            initializeOrUpdateProducts(products, fileProduct);
+            createNewProduct(products, fileProduct);
         }
     }
 
@@ -48,12 +48,12 @@ public class Utils {
     }
 
     private void createNewProduct(List<Product> products, String[] fileProduct) {
-        if (fileProduct[3] == null) {
+        if (fileProduct[3].equals("null")) {
             products.add(new Product(fileProduct[0], fileProduct[1], fileProduct[2],
-                    fileProduct[3], null));
+                    fileProduct[3], "0"));
         }
-        if (fileProduct[3] != null) {
-            products.add(new Product(fileProduct[0], fileProduct[1], null,
+        if (!fileProduct[3].equals("null")) {
+            products.add(new Product(fileProduct[0], fileProduct[1], "0",
                     fileProduct[3], fileProduct[2]));
         }
     }
