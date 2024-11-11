@@ -38,9 +38,29 @@ public class Controller {
             printStart();
             receiptList = inputProduct();
             validateAndApplyPromotions(receiptList);
-            String membership = membershipCheck();
-            printResult(membership);
+            productDown(receiptList, productList);
+            printResult();
             repurchased = repurchaseIntention();
+        }
+    }
+
+    private void productDown(List<Receipt> receiptList, List<Product> productList) {
+        for (Receipt receipt : receiptList) {
+            for (Product product : productList) {
+                product(receipt, product);
+            }
+        }
+    }
+
+    private static void product(Receipt receipt, Product product) {
+        if (receipt.getName().equals(product.getName()) && (receipt.getQuantity() != 0
+                || receipt.getPromotionQuantity() != 0)) {
+            if (product.getPromotionQuantity() != 0) {
+                product.reducesStock(receipt.getPromotionQuantity());
+            }
+            if (product.getQuantity() != 0) {
+                product.reducesStock(receipt.getQuantity());
+            }
         }
     }
 
@@ -183,7 +203,8 @@ public class Controller {
         }
     }
 
-    public void printResult(String membership) {
+    public void printResult() {
+        String membership = membershipCheck();
         outputView.printReceiptList(receiptList);
         outputView.printPromotionDetail(receiptList);
         outputView.printReceiptListDetail(receiptList, membership);
