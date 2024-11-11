@@ -20,16 +20,42 @@ public class OutputView {
 
     public void printProductList(List<Product> products) {
         for (Product product : products) {
-            if (product.getQuantity() == 0) {
-                System.out.println(
-                        "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getPromotionQuantity()
-                                + "개 " + product.getPromotion());
-            }
-            if (product.getQuantity() != 0) {
-                System.out.println(
-                        "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getQuantity()
-                                + "개 " + product.getPromotion());
-            }
+            displayPromotionProduct(product);
+            displayNonPromotionProduct(product);
+        }
+    }
+
+    private static void displayNonPromotionProduct(Product product) {
+        if (product.getPromotion() == null) {
+            quantityZeroCheck(product);
+        }
+    }
+
+    private static void quantityZeroCheck(Product product) {
+        if (product.getQuantity() == 0) {
+            System.out.println(
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 재고없음");
+        }
+        if (product.getQuantity() != 0) {
+            System.out.println(
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getQuantity() + "개");
+        }
+    }
+
+    private static void displayPromotionProduct(Product product) {
+        if (product.getPromotion() != null) {
+            promotionQuantityZeroCheck(product);
+        }
+    }
+
+    private static void promotionQuantityZeroCheck(Product product) {
+        if (product.getPromotionQuantity() == 0) {
+            System.out.println(
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 재고없음");
+        }
+        if (product.getPromotionQuantity() != 0) {
+            System.out.println(
+                    "- " + product.getName() + " " + product.getPriceUtil() + "원 " + product.getPromotion() + "개");
         }
     }
 
